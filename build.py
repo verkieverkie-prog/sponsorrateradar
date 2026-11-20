@@ -54,7 +54,7 @@ def page(title, desc, body, path, extra_head=""):
 <meta property="og:description" content="{esc(desc)}"><meta property="og:url" content="{canon}">
 <link rel="stylesheet" href="{PATH}/style.css">{extra_head}</head><body>
 <header><a class="logo" href="{PATH}/">📡 Sponsor Rate Radar</a><nav>
-<a href="{PATH}/">Rates</a><a href="{PATH}/calculator.html">Calculator</a><a href="{PATH}/rates/">By niche</a>
+<a href="{PATH}/">Rates</a><a href="{PATH}/calculator.html">Calculator</a><a href="{PATH}/rates/">By niche</a><a href="{PATH}/guides/">Guides</a>
 <a href="{PATH}/submit.html">Share a rate</a><a href="{PATH}/sponsor.html">Sponsor</a></nav></header>
 <main>{sponsor_box()}{body}{newsletter_box()}</main>
 <footer>Every number links to its public source or came from a creator submission we reviewed. Rates are what was reported, not guarantees.
@@ -202,8 +202,31 @@ plus anonymous creator submissions we review by hand.</p><ul><li>Every curated n
 <li>We never invent data. If something looks wrong, tell us and we'll fix or remove it.</li></ul>"""
 write("about.html", page("About & Method | Sponsor Rate Radar", "How Sponsor Rate Radar collects and checks sponsorship rate data.", ab, "/about.html"))
 
+# --- Guides (content/guides/*.md)
+import sys, glob
+sys.path.insert(0, ROOT)
+from guides_md import parse_front, render
+guides = []
+for fp in sorted(glob.glob(os.path.join(ROOT, "content", "guides", "*.md"))):
+    meta, md = parse_front(open(fp, encoding="utf-8").read())
+    gslug = meta.get("slug") or os.path.splitext(os.path.basename(fp))[0]
+    guides.append((gslug, meta, md))
+for gslug, meta, md in guides:
+    body, faq = render(md)
+    others = "".join(f'<li><a href="{PATH}/guides/{g}.html">{esc(m.get("title", g))}</a></li>' for g, m, _ in guides if g != gslug)
+    body = f'<article class="guide">{body}<p class="small">Updated {TODAY}. Numbers link to their sources.</p></article><h2>More guides</h2><ul>{others}</ul>'
+    head = ""
+    if faq:
+        ld = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+            {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in faq]}
+        head = '<script type="application/ld+json">' + json.dumps(ld).replace("</", "<\\/") + "</script>"
+    write(f"guides/{gslug}.html", page(meta.get("title", gslug) + " | Sponsor Rate Radar", meta.get("description", ""), body, f"/guides/{gslug}.html", head))
+gi = '<h1>Sponsorship rate guides</h1><p>Plain answers with real, sourced numbers.</p><ul class="niches">' + "".join(
+    f'<li><a href="{PATH}/guides/{g}.html">{esc(m.get("title", g))}</a><br><span class="small">{esc(m.get("description", ""))}</span></li>' for g, m, _ in guides) + "</ul>"
+write("guides/index.html", page("Sponsorship Rate Guides | Sponsor Rate Radar", "Guides on what to charge sponsors on YouTube, Shorts, newsletters and podcasts, with sourced 2026 numbers.", gi, "/guides/"))
+
 # --- sitemap + robots
-urls = ["/", "/calculator.html", "/rates/", "/submit.html", "/sponsor.html", "/about.html"] + [f"/rates/{slug(n)}.html" for n in niches]
+urls = ["/", "/calculator.html", "/rates/", "/submit.html", "/sponsor.html", "/about.html"] + [f"/rates/{slug(n)}.html" for n in niches] + ["/guides/"] + [f"/guides/{g}.html" for g, _, _ in guides]
 write("sitemap.xml", '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' +
       "".join(f"<url><loc>{BASE}{u}</loc><lastmod>{TODAY}</lastmod></url>" for u in urls) + "</urlset>")
 write("robots.txt", f"User-agent: *\nAllow: /\nSitemap: {BASE}/sitemap.xml\n")

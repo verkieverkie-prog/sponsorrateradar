@@ -121,6 +121,16 @@ selfrep = sum(1 for r in rates if r["placement"] != "Benchmark")
 srcs = len({r["source_url"] for r in rates})
 HERO_PLAT = [p for p in ["YouTube", "Newsletter", "Podcast", "Shorts", "TikTok", "Instagram", "Twitch"] if p in cpm_data]
 HERO_WORD = {"YouTube": "YouTube videos", "Newsletter": "a newsletter", "Podcast": "a podcast", "Shorts": "YouTube Shorts", "TikTok": "TikToks", "Instagram": "Instagram posts", "Twitch": "Twitch streams"}
+
+import glob as _g, re as _re
+def _home_guides():
+    items=[]
+    for fp in sorted(_g.glob(os.path.join(ROOT,"content","guides","*.md"))):
+        t=_re.search(r"^title:\s*(.+)$",open(fp).read(),_re.M)
+        sl=os.path.basename(fp)[:-3]
+        items.append(f'<li><a href="{PATH}/guides/{sl}.html">{esc(t.group(1).split(" - ")[0] if t else sl)}</a></li>')
+    return '<h2>Rate guides</h2><ul class="niches">'+"".join(items)+'</ul>'
+HOME_GUIDES=_home_guides()
 body = f"""<section class="hero" aria-labelledby="ht">
 <h1 id="ht">What should you charge a sponsor?</h1>
 <form class="say" onsubmit="return false">
@@ -145,6 +155,7 @@ document.getElementById('hb').textContent='The middle half of '+pts.length+' sou
 <div class="toolbar"><div class="filters"><input id="q" placeholder="Search (e.g. tech, 50K, dedicated)">
 {opts('platform', platforms)}{opts('niche', niches)}<select id="f-bucket"><option value="">All sizes</option>{''.join(f'<option>{b}</option>' for b in buckets)}</select>{opts('placement', placements)}
 <span id="cnt"></span></div></div>{table(rates)}
+{HOME_GUIDES}
 <p class="cta">Got a real deal? <a href="{PATH}/submit.html">Share your rate anonymously</a>. It helps every creator negotiate.</p>
 {FILTER_JS}"""
 write("index.html", page("YouTube & Newsletter Sponsorship Rates (Real Data) | Sponsor Rate Radar",

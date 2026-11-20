@@ -92,7 +92,8 @@ buckets = [b for b in BUCKETS if any(r["audience_bucket"] == b for r in rates)]
 if os.path.exists(OUT):
     shutil.rmtree(OUT)
 os.makedirs(OUT)
-shutil.copy(os.path.join(ROOT, "static", "style.css"), os.path.join(OUT, "style.css"))
+for _f in os.listdir(os.path.join(ROOT, "static")):
+    shutil.copy(os.path.join(ROOT, "static", _f), os.path.join(OUT, _f))
 open(os.path.join(OUT, ".nojekyll"), "w").write("")
 
 FILTER_JS = """<script>

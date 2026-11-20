@@ -13,3 +13,5 @@ th,td{padding:9px 10px;border-bottom:1px solid #eef0f4;text-align:left;white-spa
 .niches{list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}.niches li{background:#fff;padding:12px;border-radius:8px;border:1px solid #e5e7eb}.niches span{color:#888;font-size:13px}
 footer{max-width:1100px;margin:30px auto;padding:20px;font-size:13px;color:#666}
 @media(max-width:600px){nav a{margin:0 10px 0 0}h1{font-size:24px}}
+
+.nl{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}.nl input{flex:1;min-width:200px;padding:10px;border:1px solid #ccc;border-radius:8px;font-size:16px}

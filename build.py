@@ -30,7 +30,7 @@ def sponsor_box():
     if SPONSOR:
         return (f'<div class="sponsor">Sponsored by <a href="{esc(SPONSOR["url"])}" rel="sponsored noopener" target="_blank">'
                 f'<b>{esc(SPONSOR["name"])}</b></a>: {esc(SPONSOR["line"])}</div>')
-    return f'<div class="sponsor empty"><span class="tag">Sponsor</span> Put your brand in front of creators pricing their next deal. <a href="{PATH}/sponsor.html">Advertise here →</a></div>'
+    return f'<div class="sponsor empty"><span class="tag">Sponsor</span> Put your brand in front of creators pricing their next deal. <a href="{PATH}/sponsor.html">Advertise here</a></div>'
 
 def newsletter_box():
     url = CFG.get("newsletter_url")
@@ -52,8 +52,8 @@ def page(title, desc, body, path, extra_head=""):
 <title>{esc(title)}</title><meta name="description" content="{esc(desc)}">
 <link rel="canonical" href="{canon}"><meta property="og:title" content="{esc(title)}">
 <meta property="og:description" content="{esc(desc)}"><meta property="og:url" content="{canon}">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"><link rel="icon" href="{PATH}/favicon.svg" type="image/svg+xml"><meta name="theme-color" content="#0c0a09"><link rel="stylesheet" href="{PATH}/style.css?v=2">{extra_head}</head><body>
-<header><div class="hwrap"><a class="logo" href="{PATH}/"><svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#0c0a09"/><circle cx="16" cy="18" r="3" fill="#f97316"/><path d="M9.5 13.5a9 9 0 0 1 13 0" stroke="#f97316" stroke-width="2.4" fill="none" stroke-linecap="round"/><path d="M6 9.8a14 14 0 0 1 20 0" stroke="#fdba74" stroke-width="2.4" fill="none" stroke-linecap="round" opacity=".6"/></svg>Sponsor Rate Radar</a><nav>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="icon" href="{PATH}/favicon.svg" type="image/svg+xml"><meta name="theme-color" content="#f2f5f3"><link rel="stylesheet" href="{PATH}/style.css?v=3">{extra_head}</head><body>
+<header><div class="hwrap"><a class="logo" href="{PATH}/"><svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#1f5c47"/><circle cx="16" cy="18" r="3" fill="#f4f06a"/><path d="M9.5 13.5a9 9 0 0 1 13 0" stroke="#f4f06a" stroke-width="2.4" fill="none" stroke-linecap="round"/><path d="M6 9.8a14 14 0 0 1 20 0" stroke="#ffffff" stroke-width="2.4" fill="none" stroke-linecap="round" opacity=".6"/></svg>Sponsor Rate Radar</a><nav>
 <a href="{PATH}/">Rates</a><a href="{PATH}/calculator.html">Calculator</a><a href="{PATH}/rates/">By niche</a><a href="{PATH}/guides/">Guides</a>
 <a href="{PATH}/sponsor.html">Advertise</a><a class="navcta" href="{PATH}/submit.html">Share a rate</a></nav></div></header>
 <main>{body}{sponsor_box()}{newsletter_box()}</main>
@@ -105,25 +105,6 @@ document.getElementById('cnt').textContent=n+' rates';}
 fs.forEach(k=>document.getElementById('f-'+k).onchange=f);document.getElementById('q').oninput=f;f();
 </script>"""
 
-# --- Home
-yt = [mid(r) for r in rates if r["platform"] == "YouTube" and r["placement"] != "Benchmark"]
-selfrep = sum(1 for r in rates if r["placement"] != "Benchmark")
-srcs = len({r["source_url"] for r in rates})
-body = f"""<section class="hero"><span class="eyebrow"><i></i>Updated {TODAY} · {len(rates)} sourced rates</span>
-<h1>Know what sponsors <em>actually pay</em> before you quote.</h1>
-<p class="lede">Real sponsorship rates for YouTube, Shorts, newsletters, podcasts, TikTok, Instagram and Twitch. Every number links to where it was published.</p>
-<div class="heroctas"><a class="btn" href="{PATH}/calculator.html">Calculate my rate →</a><a class="btn ghost" href="#rates">Browse all rates</a></div>
-<div class="stats"><div class="stat"><b>{len(rates)}</b><span>sourced rates</span></div><div class="stat"><b>{len(platforms)}</b><span>platforms</span></div>
-<div class="stat"><b>{len(niches)}</b><span>niches</span></div><div class="stat"><b>{srcs}</b><span>public sources</span></div></div></section>
-<h2 id="rates">Browse every rate</h2>
-<div class="toolbar"><div class="filters"><input id="q" placeholder="Search (e.g. tech, 50K, dedicated)">
-{opts('platform', platforms)}{opts('niche', niches)}<select id="f-bucket"><option value="">All sizes</option>{''.join(f'<option>{b}</option>' for b in buckets)}</select>{opts('placement', placements)}
-<span id="cnt"></span></div></div>{table(rates)}
-<p class="cta">Got a real deal? <a href="{PATH}/submit.html">Share your rate anonymously</a>. It helps every creator negotiate.</p>
-{FILTER_JS}"""
-write("index.html", page("YouTube & Newsletter Sponsorship Rates (Real Data) | Sponsor Rate Radar",
-      f"{len(rates)} real, sourced sponsorship rates for YouTubers and newsletter creators by niche, size and placement. Free rate calculator.", body, "/"))
-
 # --- Calculator: CPMs derived only from our data
 cpm_data = {}
 for r in rates:
@@ -133,6 +114,43 @@ for r in rates:
     if c:
         cpm_data.setdefault(r["platform"], []).append((r["niche"], round(c, 2)))
 calc_json = json.dumps(cpm_data)
+
+# --- Home
+yt = [mid(r) for r in rates if r["platform"] == "YouTube" and r["placement"] != "Benchmark"]
+selfrep = sum(1 for r in rates if r["placement"] != "Benchmark")
+srcs = len({r["source_url"] for r in rates})
+HERO_PLAT = [p for p in ["YouTube", "Newsletter", "Podcast", "Shorts", "TikTok", "Instagram", "Twitch"] if p in cpm_data]
+HERO_WORD = {"YouTube": "YouTube videos", "Newsletter": "a newsletter", "Podcast": "a podcast", "Shorts": "YouTube Shorts", "TikTok": "TikToks", "Instagram": "Instagram posts", "Twitch": "Twitch streams"}
+body = f"""<section class="hero" aria-labelledby="ht">
+<h1 id="ht">What should you charge a sponsor?</h1>
+<form class="say" onsubmit="return false">
+<p>I make <select id="hp" aria-label="Platform">{''.join(f'<option value="{esc(p)}">{esc(HERO_WORD[p])}</option>' for p in HERO_PLAT)}</select>
+about <select id="hn" aria-label="Niche"><option value="">anything</option>{''.join(f'<option value="{esc(n)}">{esc(n.lower())}</option>' for n in niches)}</select>
+and each one gets about <input id="hv" type="number" inputmode="numeric" value="10000" min="100" step="100" aria-label="Views or opens per post"> <span id="hu">views</span>.</p>
+</form>
+<p class="ask" aria-live="polite">Ask for <mark id="hr">$200 to $316</mark></p>
+<p class="basis" id="hb"></p>
+<p class="heroalt">Or skip the estimate and <a href="#rates">read {len(rates)} real deals</a>, each linked to where it was published.</p>
+</section>
+<script>const HD={calc_json};
+function hp(a,p){{a=[...a].sort((x,y)=>x-y);const i=(a.length-1)*p,l=Math.floor(i);return a[l]+(a[Math.ceil(i)]-a[l])*(i-l)}}
+function hrun(){{const p=document.getElementById('hp').value,n=document.getElementById('hn').value,v=+document.getElementById('hv').value||0;
+document.getElementById('hu').textContent=p==='Newsletter'?'opens':(p==='Podcast'?'downloads':'views');
+let pts=(HD[p]||[]).filter(x=>!n||x[0]===n),note='';if(pts.length<3){{pts=HD[p]||[];if(n)note=' We only have a few '+n.toLowerCase()+' deals so far, so this uses every niche.';}}
+const c=pts.map(x=>x[1]),f=x=>'$'+Math.round(x).toLocaleString();
+document.getElementById('hr').textContent=f(hp(c,.25)*v/1000)+' to '+f(hp(c,.75)*v/1000);
+document.getElementById('hb').textContent='The middle half of '+pts.length+' sourced deals, priced per 1,000 '+document.getElementById('hu').textContent+'.'+note;}}
+['hp','hn','hv'].forEach(i=>document.getElementById(i).addEventListener('input',hrun));hrun();</script>
+<h2 id="rates">Every deal we have found</h2>
+<div class="toolbar"><div class="filters"><input id="q" placeholder="Search (e.g. tech, 50K, dedicated)">
+{opts('platform', platforms)}{opts('niche', niches)}<select id="f-bucket"><option value="">All sizes</option>{''.join(f'<option>{b}</option>' for b in buckets)}</select>{opts('placement', placements)}
+<span id="cnt"></span></div></div>{table(rates)}
+<p class="cta">Got a real deal? <a href="{PATH}/submit.html">Share your rate anonymously</a>. It helps every creator negotiate.</p>
+{FILTER_JS}"""
+write("index.html", page("YouTube & Newsletter Sponsorship Rates (Real Data) | Sponsor Rate Radar",
+      f"{len(rates)} real, sourced sponsorship rates for YouTubers and newsletter creators by niche, size and placement. Free rate calculator.", body, "/"))
+
+
 body = f"""<h1>Sponsorship rate calculator</h1>
 <p class="lede">How much should you charge for a sponsor? Enter your typical views. We estimate a range from the CPMs in our sourced data, not made-up formulas.</p>
 <div class="calc"><label>Platform <select id="cp">{''.join(f'<option>{esc(p)}</option>' for p in cpm_data)}</select></label>
@@ -146,7 +164,7 @@ function run(){{const p=document.getElementById('cp').value,n=document.getElemen
 let pts=(D[p]||[]).filter(x=>!n||x[0]===n),note='';if(pts.length<3){{pts=D[p]||[];if(n)note=' (not enough '+n+' data yet, using all niches)';}}
 if(!pts.length){{document.getElementById('out').innerHTML='Not enough data yet.';return}}
 const c=pts.map(x=>x[1]),lo=pct(c,.25)*v/1000,hi=pct(c,.75)*v/1000,f=x=>'$'+Math.round(x).toLocaleString();
-document.getElementById('out').innerHTML='<div class="big">'+f(lo)+' – '+f(hi)+'</div>per sponsor placement, based on '+pts.length+' data points'+note+'. Median CPM $'+pct(c,.5).toFixed(2)+'.';}}
+document.getElementById('out').innerHTML='<div class="big">'+f(lo)+' to '+f(hi)+'</div>per sponsor placement, based on '+pts.length+' data points'+note+'. Median CPM $'+pct(c,.5).toFixed(2)+'.';}}
 ['cp','cn','cv'].forEach(i=>document.getElementById(i).oninput=run);run();</script>"""
 write("calculator.html", page("Sponsorship Rate Calculator: How Much to Charge for a YouTube Sponsor",
       "Free calculator: estimate what to charge sponsors based on your views, niche and real CPM data.", body, "/calculator.html"))

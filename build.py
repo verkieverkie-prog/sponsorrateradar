@@ -30,7 +30,7 @@ def sponsor_box():
     if SPONSOR:
         return (f'<div class="sponsor">Sponsored by <a href="{esc(SPONSOR["url"])}" rel="sponsored noopener" target="_blank">'
                 f'<b>{esc(SPONSOR["name"])}</b></a>: {esc(SPONSOR["line"])}</div>')
-    return f'<div class="sponsor empty">This spot is open. <a href="{PATH}/sponsor.html">Sponsor Sponsor Rate Radar →</a></div>'
+    return f'<div class="sponsor empty"><span class="tag">Sponsor</span> Put your brand in front of creators pricing their next deal. <a href="{PATH}/sponsor.html">Advertise here →</a></div>'
 
 def newsletter_box():
     url = CFG.get("newsletter_url")
@@ -39,7 +39,7 @@ def newsletter_box():
                 f'<a class="btn" href="{esc(url)}" target="_blank" rel="noopener">Join the newsletter</a></div>')
     f = CFG.get("submit_endpoint")
     if f:
-        return (f'<div class="news"><b>Get 5 new real sponsor rates every week.</b> Free, one email, no fluff.'
+        return (f'<div class="news"><div><b>5 new real sponsor rates, every week.</b><p>One short email. Real deals, real numbers, no fluff. Free.</p></div>'
                 f'<form class="nl" action="{esc(f)}" method="POST"><input type="hidden" name="_subject" value="NEWSLETTER signup - Sponsor Rate Radar">'
                 '<input type="hidden" name="_captcha" value="false"><input type="text" name="_honey" style="display:none">'
                 '<input type="email" name="email" required placeholder="you@email.com" aria-label="Email"> <button class="btn">Join free</button></form></div>')
@@ -52,13 +52,12 @@ def page(title, desc, body, path, extra_head=""):
 <title>{esc(title)}</title><meta name="description" content="{esc(desc)}">
 <link rel="canonical" href="{canon}"><meta property="og:title" content="{esc(title)}">
 <meta property="og:description" content="{esc(desc)}"><meta property="og:url" content="{canon}">
-<link rel="stylesheet" href="{PATH}/style.css">{extra_head}</head><body>
-<header><a class="logo" href="{PATH}/">📡 Sponsor Rate Radar</a><nav>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"><link rel="icon" href="{PATH}/favicon.svg" type="image/svg+xml"><meta name="theme-color" content="#0c0a09"><link rel="stylesheet" href="{PATH}/style.css?v=2">{extra_head}</head><body>
+<header><div class="hwrap"><a class="logo" href="{PATH}/"><svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#0c0a09"/><circle cx="16" cy="18" r="3" fill="#f97316"/><path d="M9.5 13.5a9 9 0 0 1 13 0" stroke="#f97316" stroke-width="2.4" fill="none" stroke-linecap="round"/><path d="M6 9.8a14 14 0 0 1 20 0" stroke="#fdba74" stroke-width="2.4" fill="none" stroke-linecap="round" opacity=".6"/></svg>Sponsor Rate Radar</a><nav>
 <a href="{PATH}/">Rates</a><a href="{PATH}/calculator.html">Calculator</a><a href="{PATH}/rates/">By niche</a><a href="{PATH}/guides/">Guides</a>
-<a href="{PATH}/submit.html">Share a rate</a><a href="{PATH}/sponsor.html">Sponsor</a></nav></header>
-<main>{sponsor_box()}{body}{newsletter_box()}</main>
-<footer>Every number links to its public source or came from a creator submission we reviewed. Rates are what was reported, not guarantees.
-Updated {TODAY}. · <a href="{PATH}/about.html">About &amp; method</a></footer>
+<a href="{PATH}/sponsor.html">Advertise</a><a class="navcta" href="{PATH}/submit.html">Share a rate</a></nav></div></header>
+<main>{body}{sponsor_box()}{newsletter_box()}</main>
+<footer><div class="fwrap"><div><a class="logo" href="{PATH}/">Sponsor Rate Radar</a><p>Real sponsorship rates for creators. Every number links to its public source or a reviewed creator submission. Rates are what was reported, not guarantees. Updated {TODAY}.</p></div><div><a href="{PATH}/">Rates</a><a href="{PATH}/calculator.html">Calculator</a><a href="{PATH}/guides/">Guides</a><a href="{PATH}/about.html">Method</a><a href="{PATH}/sponsor.html">Advertise</a></div></div></footer>
 </body></html>"""
 
 def table(rows):
@@ -67,9 +66,9 @@ def table(rows):
         cpm = f"${r['cpm_usd']:g}" if r.get("cpm_usd") else "–"
         out.append(
             f'<tr data-platform="{esc(r["platform"])}" data-niche="{esc(r["niche"])}" data-bucket="{esc(r["audience_bucket"])}" data-placement="{esc(r["placement"])}">'
-            f'<td>{esc(r["platform"])}</td><td>{esc(r["niche"])}</td><td>{esc(r["audience_size"])}</td><td>{esc(r["placement"])}</td>'
+            f'<td><span class="chip c-{slug(r["platform"])}">{esc(r["platform"])}</span></td><td>{esc(r["niche"])}</td><td class="aud">{esc(r["audience_size"])}</td><td>{esc(r["placement"])}</td>'
             f'<td class="p">{money(r["price_usd_low"], r["price_usd_high"])}</td><td>{cpm}</td><td>{esc(r["year"])}</td>'
-            f'<td><a href="{esc(r["source_url"])}" target="_blank" rel="noopener nofollow" title="{esc(r.get("note",""))}">{esc(r["source_name"])}</a></td></tr>')
+            f'<td class="src"><a href="{esc(r["source_url"])}" target="_blank" rel="noopener nofollow" title="{esc(r.get("note",""))}">{esc(r["source_name"])}</a></td></tr>')
     out.append("</tbody></table></div>")
     return "".join(out)
 
@@ -83,7 +82,8 @@ def write(rel, content):
     open(p, "w").write(content)
 
 BUCKETS = ["Under 1K", "1K-10K", "10K-50K", "50K-100K", "100K-500K", "500K-1M", "1M+"]
-rates.sort(key=lambda r: (-r["year"], r["platform"], r["niche"]))
+PORD = ["YouTube", "Shorts", "Newsletter", "Podcast", "TikTok", "Instagram", "Twitch"]
+rates.sort(key=lambda r: (r["placement"] == "Benchmark", PORD.index(r["platform"]) if r["platform"] in PORD else 99, -r["year"], r["niche"]))
 platforms = sorted({r["platform"] for r in rates})
 niches = sorted({r["niche"] for r in rates})
 placements = sorted({r["placement"] for r in rates})
@@ -107,12 +107,18 @@ fs.forEach(k=>document.getElementById('f-'+k).onchange=f);document.getElementByI
 
 # --- Home
 yt = [mid(r) for r in rates if r["platform"] == "YouTube" and r["placement"] != "Benchmark"]
-body = f"""<h1>What do sponsors actually pay creators?</h1>
-<p class="lede">{len(rates)} real sponsorship rates for YouTube, Shorts, newsletters and podcasts, each linked to where it was published.
-Filter by niche and audience size, or use the <a href="{PATH}/calculator.html">rate calculator</a>.</p>
-<div class="filters"><input id="q" placeholder="Search (e.g. tech, 50K, dedicated)">
+selfrep = sum(1 for r in rates if r["placement"] != "Benchmark")
+srcs = len({r["source_url"] for r in rates})
+body = f"""<section class="hero"><span class="eyebrow"><i></i>Updated {TODAY} · {len(rates)} sourced rates</span>
+<h1>Know what sponsors <em>actually pay</em> before you quote.</h1>
+<p class="lede">Real sponsorship rates for YouTube, Shorts, newsletters, podcasts, TikTok, Instagram and Twitch. Every number links to where it was published.</p>
+<div class="heroctas"><a class="btn" href="{PATH}/calculator.html">Calculate my rate →</a><a class="btn ghost" href="#rates">Browse all rates</a></div>
+<div class="stats"><div class="stat"><b>{len(rates)}</b><span>sourced rates</span></div><div class="stat"><b>{len(platforms)}</b><span>platforms</span></div>
+<div class="stat"><b>{len(niches)}</b><span>niches</span></div><div class="stat"><b>{srcs}</b><span>public sources</span></div></div></section>
+<h2 id="rates">Browse every rate</h2>
+<div class="toolbar"><div class="filters"><input id="q" placeholder="Search (e.g. tech, 50K, dedicated)">
 {opts('platform', platforms)}{opts('niche', niches)}<select id="f-bucket"><option value="">All sizes</option>{''.join(f'<option>{b}</option>' for b in buckets)}</select>{opts('placement', placements)}
-<span id="cnt"></span></div>{table(rates)}
+<span id="cnt"></span></div></div>{table(rates)}
 <p class="cta">Got a real deal? <a href="{PATH}/submit.html">Share your rate anonymously</a>. It helps every creator negotiate.</p>
 {FILTER_JS}"""
 write("index.html", page("YouTube & Newsletter Sponsorship Rates (Real Data) | Sponsor Rate Radar",
@@ -214,7 +220,7 @@ for fp in sorted(glob.glob(os.path.join(ROOT, "content", "guides", "*.md"))):
 for gslug, meta, md in guides:
     body, faq = render(md)
     others = "".join(f'<li><a href="{PATH}/guides/{g}.html">{esc(m.get("title", g))}</a></li>' for g, m, _ in guides if g != gslug)
-    body = f'<article class="guide">{body}<p class="small">Updated {TODAY}. Numbers link to their sources.</p></article><h2>More guides</h2><ul>{others}</ul>'
+    body = f'<article class="guide prose">{body}<p class="small">Updated {TODAY}. Numbers link to their sources.</p></article><h2>More guides</h2><ul>{others}</ul>'
     head = ""
     if faq:
         ld = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [

@@ -173,6 +173,10 @@ write("submit.html", page("Share Your Sponsorship Rate Anonymously | Sponsor Rat
       f'<h1>Share a sponsorship rate</h1><p class="lede">Anonymous. No brand names needed. We review every submission before it goes live and never publish your channel name.</p>{sbody}', "/submit.html"))
 
 # --- Sponsor page
+SPFORM = (f'<form class="sub" action="{esc(form)}" method="POST"><input type="hidden" name="_subject" value="SPONSOR inquiry - Sponsor Rate Radar">'
+          '<input type="text" name="_honey" style="display:none"><label>Your name<input name="name" required></label>'
+          '<label>Work email<input name="email" type="email" required></label><label>Company / product<input name="company" required></label>'
+          '<label>Anything we should know?<textarea name="message"></textarea></label><button class="btn">Get in touch</button></form>') if form else '<p>Contact form coming soon.</p>'
 contact = CFG.get("contact_email", "")
 sp = f"""<h1>Sponsor Sponsor Rate Radar</h1>
 <p class="lede">Every visitor here is a creator trying to figure out what to charge sponsors: YouTubers, newsletter writers and podcasters.
@@ -181,7 +185,7 @@ If you sell to creators (editing, thumbnails, gear, sponsorship marketplaces, cr
 <li>Your logo, link and one line at the top of every page</li><li>A sponsor line in the weekly rate newsletter</li>
 <li>One sponsor at a time. No clutter, no ad networks.</li><li>Month to month, cancel any time</li></ul>
 <p>Founding price, locked in for as long as you stay.</p>
-{f'<a class="btn" href="mailto:{esc(contact)}?subject=Sponsor%20Rate%20Radar%20sponsorship">Get in touch</a>' if contact else '<p>Contact form coming soon.</p>'}</div>"""
+{SPFORM}</div>"""
 write("sponsor.html", page("Advertise to YouTubers & Creators | Sponsor Rate Radar", "Reach creators researching sponsorship rates. Founding sponsor slots.", sp, "/sponsor.html"))
 
 # --- About

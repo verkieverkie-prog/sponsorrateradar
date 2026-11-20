@@ -4,6 +4,6 @@
  "sponsor_price": 50,
  "sponsor": null,
  "newsletter_url": null,
- "submit_endpoint": null,
+ "submit_endpoint": "https://formsubmit.co/46f8cb0f98199303d7b674b1dd482e14",
  "contact_email": null
 }

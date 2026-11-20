@@ -82,7 +82,7 @@ def write(rel, content):
     os.makedirs(os.path.dirname(p), exist_ok=True)
     open(p, "w").write(content)
 
-BUCKETS = ["<10K", "10K-50K", "50K-100K", "100K-500K", "500K-1M", "1M+"]
+BUCKETS = ["Under 1K", "1K-10K", "10K-50K", "50K-100K", "100K-500K", "500K-1M", "1M+"]
 rates.sort(key=lambda r: (-r["year"], r["platform"], r["niche"]))
 platforms = sorted({r["platform"] for r in rates})
 niches = sorted({r["niche"] for r in rates})
@@ -162,7 +162,7 @@ write("rates/index.html", page("Sponsorship Rates by Niche | Sponsor Rate Radar"
 
 # --- Submit
 form = CFG.get("submit_endpoint")
-fields = """<label>Platform<select name="platform" required><option>YouTube</option><option>Shorts</option><option>Newsletter</option><option>Podcast</option><option>TikTok</option><option>Instagram</option></select></label>
+fields = """<label>Platform<select name="platform" required><option>YouTube</option><option>Shorts</option><option>Newsletter</option><option>Podcast</option><option>TikTok</option><option>Instagram</option><option>Twitch</option></select></label>
 <label>Niche<input name="niche" required placeholder="e.g. Tech, Gaming, Finance"></label>
 <label>Audience size<input name="audience" required placeholder="e.g. 42K subs / 8K email subscribers"></label>
 <label>Avg views or opens per post<input name="avg_views" type="number"></label>

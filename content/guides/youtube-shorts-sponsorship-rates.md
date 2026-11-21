@@ -30,6 +30,8 @@ Other sources land in a similar place:
 
 You can see all of these rows on our [rates index](/sponsorrateradar/rates/).
 
+[TrendReport](https://trendreport.com/intelligence/youtube-sponsorship-rates-by-niche/) publishes a typical Short rate of **$6 to $20 per 1,000 views**, against $15 to $40 for a long video. That figure is modeled, not a stack of invoices. On 50,000 Short views it is $300 to $1,000, which sits inside the 10K-50K row above.
+
 ## Why Shorts cost less (even with more views)
 
 Dangaro found Shorts often reach 100-300% of a channel's subscriber count in views, versus 30-50% for long-form. So why do they sell for less?

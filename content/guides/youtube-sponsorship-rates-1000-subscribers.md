@@ -43,6 +43,8 @@ Niche moves the number a lot. OutlierKit says finance and tech nano channels get
 | Beauty / skincare | $100 to $350 | $50 to $175 | $30 to $100 |
 | Lifestyle / vlogs | $75 to $300 | $40 to $150 | $25 to $80 |
 
+Finance pays the most at every size. See [how much finance YouTubers charge](/sponsorrateradar/guides/finance-youtuber-sponsorship-rates.html) for bigger channels too.
+
 Those are US-audience numbers. The same page says India and Southeast Asia audiences usually price at 0.3x to 0.5x of that, and Western Europe at 0.7x to 0.85x.
 
 ## Real deals small creators reported

@@ -181,14 +181,20 @@ write("calculator.html", page("Sponsorship Rate Calculator: How Much to Charge f
       "Free calculator: estimate what to charge sponsors based on your views, niche and real CPM data.", body, "/calculator.html"))
 
 # --- Niche pages (SEO)
+def _gtitle(g):
+    t = open(os.path.join(ROOT, 'content', 'guides', g + '.md')).read()
+    m = re.search(r'^title:\s*(.+)$', t, re.M)
+    return m.group(1).strip() if m else g
 idx = ['<h1>Sponsorship rates by niche</h1><ul class="niches">']
 for n in niches:
     rows = [r for r in rates if r["niche"] == n]
     s = slug(n)
     prices = [mid(r) for r in rows if r["placement"] != "Benchmark"]
     summ = f"Reported deals range from {money(min(prices), min(prices))} to {money(max(prices), max(prices))}." if prices else ""
+    ng = [os.path.basename(fp)[:-3] for fp in sorted(_g.glob(os.path.join(ROOT, 'content', 'guides', '*.md'))) if slug(n) in os.path.basename(fp)]
+    gl = ''.join(f'<p>Read the guide: <a href="{PATH}/guides/{g}.html">{esc(_gtitle(g))}</a></p>' for g in ng)
     b = (f'<h1>{esc(n)} sponsorship rates</h1><p class="lede">{len(rows)} real sponsorship data points for {esc(n).lower()} creators. {summ} '
-         f'Every row links to its source. Try the <a href="{PATH}/calculator.html">calculator</a> for your own numbers.</p>' + table(rows))
+         f'Every row links to its source. Try the <a href="{PATH}/calculator.html">calculator</a> for your own numbers.</p>' + gl + table(rows))
     write(f"rates/{s}.html", page(f"{n} Sponsorship Rates for YouTubers & Newsletters ({datetime.date.today().year}) | Sponsor Rate Radar",
           f"What sponsors pay {n.lower()} creators: {len(rows)} real, sourced rates by channel size and placement.", b, f"/rates/{s}.html"))
     idx.append(f'<li><a href="{PATH}/rates/{s}.html">{esc(n)}</a> <span>{len(rows)} rates</span></li>')

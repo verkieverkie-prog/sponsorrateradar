@@ -83,4 +83,15 @@ Try your numbers in the [sponsorship rate calculator](/sponsorrateradar/calculat
 - Ask for one round of revisions max and a clear publish date.
 - Always say "sponsored" or "ad" on the video. It's required.
 
+## FAQ
+
+### Can you get sponsors with 1,000 subscribers on YouTube?
+Yes. Small creators report real deals at 1K to 10K subscribers and even under 1K, usually $50 to $500, often paid as product plus a fee.
+
+### How much does a YouTuber with 1,000 subscribers make from a sponsorship?
+About $50 to $250 for an integration and $100 to $500 for a dedicated video in 2026, depending on views and niche.
+
+### Which niches pay small YouTube channels the most?
+Finance and tech. OutlierKit says finance and tech nano channels get 40% to 60% more than lifestyle or entertainment channels.
+
 Got a deal of your own? [Share it anonymously](/sponsorrateradar/submit.html) and it helps the next creator.

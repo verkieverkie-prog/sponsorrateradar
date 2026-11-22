@@ -2522,21 +2522,6 @@
  {
   "platform": "YouTube",
   "niche": "General",
-  "audience_size": "~1K subs",
-  "audience_bucket": "Under 1K",
-  "avg_views": 200,
-  "placement": "Integration",
-  "price_usd_low": 200,
-  "price_usd_high": 200,
-  "cpm_usd": null,
-  "year": 2024,
-  "source_name": "Reddit r/PartneredYoutube (creator self-reported)",
-  "source_url": "https://www.reddit.com/r/PartneredYoutube/comments/1fft938/how_did_you_get_your_first_sponsor_and_how_much/",
-  "note": "$200 from a podcast company before monetization, a little over 1K subs; video got ~200 views"
- },
- {
-  "platform": "YouTube",
-  "niche": "General",
   "audience_size": "50K subs",
   "audience_bucket": "50K-100K",
   "avg_views": null,

@@ -25,6 +25,7 @@ Here's every small-channel data point in our database, with sources:
 A few more 2026 ranges for the 10K-50K band:
 
 - [1of10](https://www.1of10.com/blog/youtube-sponsorship-rates/): $200 to $1,500 per sponsored video for 10K-50K subs; $50 to $500 for 1K-10K, often product plus a fee.
+- Under 10K subs? See [YouTube sponsorship rates with 1,000 subscribers](/sponsorrateradar/guides/youtube-sponsorship-rates-1000-subscribers.html) for nano rates by niche.
 - [Influencer Advisory](https://influenceradvisory.com/blog/creator-rate-card-template/), from 106 creators under 50K subs with a fee on file: median $1,000, middle half $450 to $1,976.
 - [Dangaro](https://dangaro.com/en/blog/youtube-shorts-sponsorship-cost): $500 to $3,000 for long-form and $150 to $1,000 for Shorts at 10K-50K subs (US/English market).
 

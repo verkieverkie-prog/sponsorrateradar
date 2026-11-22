@@ -27,6 +27,8 @@ Other sources land in a similar place:
 
 - [CollabPals' rate calculator](https://www.collabpals.com/tools/youtube-sponsorship-rate-calculator) puts a sponsored Short at **$200 to $1,500** for a 100,000-subscriber channel, often sold in multi-Short packages.
 - [1of10](https://www.1of10.com/blog/youtube-sponsorship-rates/) prices a sponsored Short at **0.25x to 0.5x** a standard 60-90 second integration.
+- [InfluencerFee](https://influencerfee.com/blog/youtube-shorts-creator-rates/) splits dedicated Shorts from a mention inside a Short. Dedicated: **$25 to $100** at 1K-10K subs, **$100 to $400** at 10K-50K, **$400 to $900** at 50K-100K. A mention inside a Short runs about 60% of that ($15 to $60, $60 to $250, $250 to $550).
+- [OutlierKit](https://outlierkit.com/resources/youtube-nano-influencer-sponsorship-rates/) puts nano (1K-10K) Shorts at **$25 to $150**, with finance at the top ($50 to $150) and lifestyle at the bottom ($25 to $80).
 
 You can see all of these rows on our [rates index](/sponsorrateradar/rates/).
 

@@ -80,3 +80,17 @@ Channels with 1K to 10K subscribers get about $100 to $250 for an integration an
 Finance sponsors such as brokerages, budgeting apps and tax software earn a lot from each customer, so they can pay more for each viewer.
 
 Got a finance deal of your own? [Share it anonymously](/sponsorrateradar/submit.html) so the next creator knows what is fair.
+
+## Finance rates by subscriber count (modeled)
+
+[VidScored](https://vidscored.com/tools/sponsorship-rates/finance) models a dedicated video for a US channel at median engagement, using 2025 rate-card CPMs of $25 to $500 per 1,000 views depending on size:
+
+| Subscribers | Example views | Dedicated video |
+|---|---|---|
+| 1K to 10K | 3,000 | $75 to $450 |
+| 10K to 100K | 15,000 | $525 to $3,400 |
+| 100K to 500K | 60,000 | $2,700 to $18,000 |
+| 500K to 1M | 150,000 | $8,300 to $57,000 |
+| 1M+ | 400,000 | $26,000 to $200,000 |
+
+These are modeled ranges, not reported deals. VidScored says real deals vary 2 to 4 times either way.

@@ -93,6 +93,24 @@ Programmatic ads (inserted automatically by your host or an ad network) run abou
 
 Compare your result with the [calculator](/sponsorrateradar/calculator.html) and the sourced rows on our [rates index](/sponsorrateradar/rates/).
 
+## Libsyn Ads rate card by ad type
+
+Libsyn Ads publishes CPMs per 1,000 downloads, as reported by [The Podosphere](https://www.thepodosphere.com/blog/podcast-sponsorship-rates-2026-guide):
+
+| Ad type | CPM |
+|---|---|
+| Host-read, 60 seconds, baked in | $24 to $26 |
+| Host-read, 30 seconds, baked in | $18 to $22 |
+| Dynamic, new episode | $18 to $22 |
+| Dynamic, back catalog | $14 to $16 |
+| Programmatic | $12 to $15 |
+
+Topic moves the price. A 60 second host read averages $30 on business shows, $27 on health and fitness, $26 on tech and education, $23 on comedy and $22 on games.
+
+## What you keep when someone else sells the ad
+
+Ad programs from hosting companies pay podcasters about 50% to 70% of what the advertiser pays. A sponsor you sign yourself pays you all of it. True Native Media, for example, says it charges brands about $30 CPM and the show keeps about 70%. Buzzsprout Ads pays 0.7 to 1.4 cents per download, so 1,000 downloads brings $7 to $14. Small shows on automatic ads earn far less per listener than a direct host-read deal.
+
 ## FAQ
 
 ### What is the average CPM for a podcast ad?
@@ -110,6 +128,10 @@ Mid-roll. ADOPTER Media lists host-read mid-roll at $15-$30 CPM, pre-roll at $15
 ### Do podcast sponsors pay up front?
 
 It varies. Direct deals often invoice on air date or net-30. For a first deal with a new brand, asking for half up front and half on air is normal.
+
+### How much does a 60 second host-read ad cost per 1,000 downloads?
+
+Libsyn Ads lists $24 to $26 for a baked-in 60 second host read and $18 to $22 for 30 seconds. Business shows average about $30.
 
 ### Are podcast ad rates negotiable?
 

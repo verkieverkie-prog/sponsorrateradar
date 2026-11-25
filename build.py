@@ -226,15 +226,21 @@ SPFORM = (f'<form class="sub" action="{esc(form)}" method="POST"><input type="hi
           '<label>Work email<input name="email" type="email" required></label><label>Company / product<input name="company" required></label>'
           '<label>Anything we should know?<textarea name="message"></textarea></label><button class="btn">Get in touch</button></form>') if form else '<p>Contact form coming soon.</p>'
 contact = CFG.get("contact_email", "")
+PRICE = CFG.get('sponsor_price', 49)
+PAYLINK = CFG.get('stripe_link')
+RESERVE = (f'<p><a class="btn" href="{esc(PAYLINK)}" rel="noopener">Reserve this slot (${PRICE})</a></p>' if PAYLINK
+           else '<p><a class="btn" href="#stripe-link-pending" aria-disabled="true" style="opacity:.5;pointer-events:none">Reserve (opening soon)</a></p>')
 sp = f"""<h1>Sponsor Sponsor Rate Radar</h1>
 <p class="lede">Every visitor here is a creator trying to figure out what to charge sponsors: YouTubers, newsletter writers and podcasters.
 If you sell to creators (editing, thumbnails, gear, sponsorship marketplaces, creator finance), this is your audience.</p>
-<div class="card"><h2>Founding sponsor: ${CFG.get('sponsor_price', 50)}/month</h2><ul>
+<div class="card"><h2>Featured sponsor: ${PRICE} for 30 days</h2><ul>
 <li>Your logo, link and one line at the top of every page</li><li>A sponsor line in the weekly rate newsletter</li>
-<li>One sponsor at a time. No clutter, no ad networks.</li><li>Month to month, cancel any time</li></ul>
+<li>One sponsor at a time. No clutter, no ad networks.</li><li>30 days per slot, renew if you like it</li></ul>
 <p>Founding price, locked in for as long as you stay.</p>
+{RESERVE}
+<p class="small">Want it sooner, or have questions? Drop us a note and we'll hold the slot for you.</p>
 {SPFORM}</div>"""
-write("sponsor.html", page("Advertise to YouTubers & Creators | Sponsor Rate Radar", "Reach creators researching sponsorship rates. Founding sponsor slots.", sp, "/sponsor.html"))
+write("sponsor.html", page("Advertise to YouTubers & Creators | Sponsor Rate Radar", "Reach creators researching sponsorship rates. Featured sponsor slot, $49 for 30 days.", sp, "/sponsor.html"))
 
 # --- About
 ab = """<h1>About &amp; method</h1><p>Sponsor Rate Radar collects sponsorship rates that creators, agencies and platforms have published,

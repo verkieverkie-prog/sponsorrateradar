@@ -32,6 +32,22 @@ InfluencerFee lists a dedicated, brand-focused video separately from a standard 
 - 100K - 500K followers: $3,000 - $8,000
 - A sponsored TikTok LIVE at 10K - 50K followers: $200 - $1,000
 
+## Rates by niche and follower tier
+
+Category matters more than follower count on TikTok. InfluencerFee's 2026 category table shows finance creators with 80,000 followers charging more than entertainment creators with ten times the audience.
+
+| Niche | 10K-100K followers | 100K-500K followers |
+|---|---|---|
+| Finance / investing | $600 - $4,500 | $3,500 - $18,000 |
+| B2B / SaaS | $500 - $3,500 | $3,000 - $15,000 |
+| Fitness / wellness | $300 - $3,000 | $2,500 - $10,000 |
+| Beauty / skincare | $300 - $3,500 | $2,500 - $12,000 |
+| Fashion / apparel | $300 - $3,000 | $2,500 - $12,000 |
+| Food / cooking | $200 - $2,000 | $1,500 - $8,000 |
+| Gaming | $200 - $2,000 | $1,500 - $8,000 |
+
+Source: [InfluencerFee, TikTok influencer rates by category](https://influencerfee.com/blog/tiktok-influencer-rates-by-category/). Per sponsored video.
+
 ## Per-view rates by niche
 
 Some brands pay per view instead. InfluencerFee's cost-per-view benchmarks, shown per 1,000 views:

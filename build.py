@@ -227,9 +227,10 @@ SPFORM = (f'<form class="sub" action="{esc(form)}" method="POST"><input type="hi
           '<label>Anything we should know?<textarea name="message"></textarea></label><button class="btn">Get in touch</button></form>') if form else '<p>Contact form coming soon.</p>'
 contact = CFG.get("contact_email", "")
 PRICE = CFG.get('sponsor_price', 49)
-PAYLINK = CFG.get('stripe_link')
-RESERVE = (f'<p><a class="btn" href="{esc(PAYLINK)}" rel="noopener">Reserve this slot (${PRICE})</a></p>' if PAYLINK
-           else '<p><a class="btn" href="#stripe-link-pending" aria-disabled="true" style="opacity:.5;pointer-events:none">Reserve (opening soon)</a></p>')
+RESERVE = (f'<form class="sub" action="{esc(form)}" method="POST"><input type="hidden" name="_subject" value="PAID INTENT - ${PRICE} sponsor slot - Sponsor Rate Radar">'
+           f'<input type="hidden" name="message" value="paid intent, ${PRICE} slot, we\'ll email a payment link"><input type="text" name="_honey" style="display:none">'
+           f'<p class="small">Slot opening soon, not bookable yet. Leave your email and we\'ll send a payment link when it opens.</p>'
+           f'<label>Work email<input name="email" type="email" required></label><button class="btn">Reserve this slot (${PRICE} / 30 days)</button></form>') if form else ''
 sp = f"""<h1>Sponsor Sponsor Rate Radar</h1>
 <p class="lede">Every visitor here is a creator trying to figure out what to charge sponsors: YouTubers, newsletter writers and podcasters.
 If you sell to creators (editing, thumbnails, gear, sponsorship marketplaces, creator finance), this is your audience.</p>

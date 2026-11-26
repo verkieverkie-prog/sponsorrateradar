@@ -36,6 +36,21 @@ Your niche changes the price a lot. Finance pays roughly four times what tech an
 
 Source: [Nowadays Media](https://nowadays.media/influencer-marketing/instagram-influencer-rates-2026/).
 
+## Instagram rates by niche and tier (flat fee per post)
+
+| Niche | Micro (10K-100K) | Mid-tier |
+|---|---|---|
+| Finance / fintech | $500 - $2,500 | $5,000 - $18,000 |
+| Health and medical | $400 - $1,800 | $4,000 - $14,000 |
+| Beauty and skincare | $300 - $1,500 | $3,000 - $10,000 |
+| Fitness and wellness | $250 - $1,200 | $2,500 - $9,000 |
+| Food and recipes | $200 - $900 | $2,000 - $7,000 |
+| Fashion and style | $200 - $1,000 | $2,000 - $7,500 |
+| Travel | $200 - $900 | $2,000 - $7,000 |
+| Gaming and esports | $150 - $700 | $1,500 - $6,000 |
+
+Source: [InfluencerFee](https://influencerfee.com/influencer-pricing-by-niche/). These assume organic-only usage rights. The source says to add 30 to 50 percent if the brand wants to run your post as a paid ad.
+
 ## How to use these numbers
 
 1. Look up your average Reel impressions over the last 30 days, not your follower count.
@@ -44,6 +59,9 @@ Source: [Nowadays Media](https://nowadays.media/influencer-marketing/instagram-i
 4. Charge extra for usage rights (the brand running your Reel as an ad) and exclusivity.
 
 ## FAQ
+
+### Does my niche change what I can charge on Instagram?
+Yes. InfluencerFee puts finance micro creators at $500 to $2,500 per post versus $150 to $700 for gaming.
 
 ### How much should I charge for an Instagram Reel with 10K followers?
 Nowadays Media puts micro creators (10K-100K followers) at $300 to $800 per sponsored Reel in 2026.

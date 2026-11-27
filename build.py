@@ -227,10 +227,13 @@ SPFORM = (f'<form class="sub" action="{esc(form)}" method="POST"><input type="hi
           '<label>Anything we should know?<textarea name="message"></textarea></label><button class="btn">Get in touch</button></form>') if form else '<p>Contact form coming soon.</p>'
 contact = CFG.get("contact_email", "")
 PRICE = CFG.get('sponsor_price', 49)
-RESERVE = (f'<form class="sub" action="{esc(form)}" method="POST"><input type="hidden" name="_subject" value="PAID INTENT - ${PRICE} sponsor slot - Sponsor Rate Radar">'
-           f'<input type="hidden" name="message" value="paid intent, ${PRICE} slot, we\'ll email a payment link"><input type="text" name="_honey" style="display:none">'
-           f'<p class="small">Slot opening soon, not bookable yet. Leave your email and we\'ll send a payment link when it opens.</p>'
-           f'<label>Work email<input name="email" type="email" required></label><button class="btn">Reserve this slot (${PRICE} / 30 days)</button></form>') if form else ''
+CHECKOUT = CFG.get('sponsor_checkout_url', '')
+RESERVE = (f'<p><a class="btn" href="{esc(CHECKOUT)}" target="_blank" rel="noopener">Book this slot — ${PRICE} / 30 days</a></p>'
+           f'<p class="small">Instant checkout via Stripe. Add your brand URL and one-line pitch at checkout — live across the site within 24 hours.</p>') if CHECKOUT else (
+           (f'<form class="sub" action="{esc(form)}" method="POST"><input type="hidden" name="_subject" value="PAID INTENT - ${PRICE} sponsor slot - Sponsor Rate Radar">'
+            f'<input type="hidden" name="message" value="paid intent, ${PRICE} slot, we\'ll email a payment link"><input type="text" name="_honey" style="display:none">'
+            f'<p class="small">Slot opening soon, not bookable yet. Leave your email and we\'ll send a payment link when it opens.</p>'
+            f'<label>Work email<input name="email" type="email" required></label><button class="btn">Reserve this slot (${PRICE} / 30 days)</button></form>') if form else '')
 sp = f"""<h1>Sponsor Sponsor Rate Radar</h1>
 <p class="lede">Every visitor here is a creator trying to figure out what to charge sponsors: YouTubers, newsletter writers and podcasters.
 If you sell to creators (editing, thumbnails, gear, sponsorship marketplaces, creator finance), this is your audience.</p>
@@ -239,7 +242,7 @@ If you sell to creators (editing, thumbnails, gear, sponsorship marketplaces, cr
 <li>One sponsor at a time. No clutter, no ad networks.</li><li>30 days per slot, renew if you like it</li></ul>
 <p>Founding price, locked in for as long as you stay.</p>
 {RESERVE}
-<p class="small">Want it sooner, or have questions? Drop us a note and we'll hold the slot for you.</p>
+<p class="small">Have questions or want a multi-month slot? Drop us a note below.</p>
 {SPFORM}</div>"""
 write("sponsor.html", page("Advertise to YouTubers & Creators | Sponsor Rate Radar", "Reach creators researching sponsorship rates. Featured sponsor slot, $49 for 30 days.", sp, "/sponsor.html"))
 

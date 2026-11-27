@@ -5,5 +5,6 @@
  "sponsor": null,
  "newsletter_url": null,
  "submit_endpoint": "https://formsubmit.co/46f8cb0f98199303d7b674b1dd482e14",
- "contact_email": null
+ "contact_email": null,
+ "sponsor_checkout_url": "https://buy.stripe.com/6oU6oH3T84c2bapdV5gA80h"
 }

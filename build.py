@@ -17,7 +17,7 @@ def slug(s):
 
 def money(lo, hi):
     lo, hi = int(round(lo)), int(round(hi))
-    return f"${lo:,}" if lo == hi else f"${lo:,}–${hi:,}"
+    return f"${lo:,}" if lo == hi else f"${lo:,}-${hi:,}"
 
 def mid(r):
     return (r["price_usd_low"] + r["price_usd_high"]) / 2
@@ -25,25 +25,26 @@ def mid(r):
 TODAY = datetime.date.today().isoformat()
 
 SPONSOR = CFG.get("sponsor")  # {"name","url","line"} or None
+PRICE = CFG.get("sponsor_price", 49)
 
 def sponsor_box():
     if SPONSOR:
         return (f'<div class="sponsor">Sponsored by <a href="{esc(SPONSOR["url"])}" rel="sponsored noopener" target="_blank">'
                 f'<b>{esc(SPONSOR["name"])}</b></a>: {esc(SPONSOR["line"])}</div>')
-    return f'<div class="sponsor empty"><span class="tag">Sponsor</span> Put your brand in front of creators pricing their next deal. <a href="{PATH}/sponsor.html">Advertise here</a></div>'
+    return f'<div class="sponsor empty"><span class="tag">Sponsor</span> Selling to creators? Put your product on every page of this site. <a href="{PATH}/sponsor.html">Book the ${PRICE} slot</a></div>'
 
 def newsletter_box():
     url = CFG.get("newsletter_url")
     if url:
-        return (f'<div class="news"><b>Get 5 new real sponsor rates every week.</b> Free, one email, no fluff. '
-                f'<a class="btn" href="{esc(url)}" target="_blank" rel="noopener">Join the newsletter</a></div>')
+        return (f'<div class="news"><b>Get 5 new brand deal receipts every week.</b> Actual creator payouts across YouTube, podcasts, and newsletters. Free. '
+                f'<a class="btn" href="{esc(url)}" target="_blank" rel="noopener">Send me the rates</a></div>')
     f = CFG.get("submit_endpoint")
     if f:
-        return (f'<div class="news"><div><b>5 new real sponsor rates, every week.</b><p>One short email. Real deals, real numbers, no fluff. Free.</p></div>'
+        return (f'<div class="news"><div><b>Get 5 new brand deal receipts every week.</b><p>Actual creator payouts across YouTube, podcasts, and newsletters. One short email, free.</p></div>'
                 f'<form class="nl" action="{esc(f)}" method="POST"><input type="hidden" name="_subject" value="NEWSLETTER signup - Sponsor Rate Radar">'
                 '<input type="hidden" name="_captcha" value="false"><input type="text" name="_honey" style="display:none">'
-                '<input type="email" name="email" required placeholder="you@email.com" aria-label="Email"> <button class="btn">Join free</button></form></div>')
-    return ('<div class="news"><b>Weekly rate drop coming soon:</b> 5 new real sponsor rates every week, free.</div>')
+                '<input type="email" name="email" required placeholder="you@email.com" aria-label="Email"> <button class="btn">Send me the rates</button></form></div>')
+    return ('<div class="news"><b>Weekly rate drop coming soon:</b> 5 new brand deal receipts every week, free.</div>')
 
 def page(title, desc, body, path, extra_head=""):
     canon = f"{BASE}{path}"
@@ -57,13 +58,13 @@ def page(title, desc, body, path, extra_head=""):
 <a href="{PATH}/">Rates</a><a href="{PATH}/calculator.html">Calculator</a><a href="{PATH}/rates/">By niche</a><a href="{PATH}/guides/">Guides</a>
 <a href="{PATH}/sponsor.html">Advertise</a><a class="navcta" href="{PATH}/submit.html">Share a rate</a></nav></div></header>
 <main>{body}{sponsor_box()}{newsletter_box()}</main>
-<footer><div class="fwrap"><div><a class="logo" href="{PATH}/">Sponsor Rate Radar</a><p>Real sponsorship rates for creators. Every number links to its public source or a reviewed creator submission. Rates are what was reported, not guarantees. Updated {TODAY}.</p></div><div><a href="{PATH}/">Rates</a><a href="{PATH}/calculator.html">Calculator</a><a href="{PATH}/guides/">Guides</a><a href="{PATH}/about.html">Method</a><a href="{PATH}/sponsor.html">Advertise</a></div></div></footer>
+<footer><div class="fwrap"><div><a class="logo" href="{PATH}/">Sponsor Rate Radar</a><p>Sourced brand deal rates for creators. Every row links back to the original creator post, agency report, or reviewed submission. Reported payouts, not guarantees. Last updated {TODAY}.</p></div><div><a href="{PATH}/">Rates</a><a href="{PATH}/calculator.html">Calculator</a><a href="{PATH}/guides/">Guides</a><a href="{PATH}/about.html">Method</a><a href="{PATH}/sponsor.html">Advertise</a></div></div></footer>
 </body></html>"""
 
 def table(rows):
     out = ['<div class="tw"><table><thead><tr><th>Platform</th><th>Niche</th><th>Audience</th><th>Placement</th><th>Price</th><th>CPM</th><th>Year</th><th>Source</th></tr></thead><tbody>']
     for r in rows:
-        cpm = f"${r['cpm_usd']:g}" if r.get("cpm_usd") else "–"
+        cpm = f"${r['cpm_usd']:g}" if r.get("cpm_usd") else "-"
         out.append(
             f'<tr data-platform="{esc(r["platform"])}" data-niche="{esc(r["niche"])}" data-bucket="{esc(r["audience_bucket"])}" data-placement="{esc(r["placement"])}">'
             f'<td><span class="chip c-{slug(r["platform"])}">{esc(r["platform"])}</span></td><td>{esc(r["niche"])}</td><td class="aud">{esc(r["audience_size"])}</td><td>{esc(r["placement"])}</td>'
@@ -129,56 +130,56 @@ def _home_guides():
         t=_re.search(r"^title:\s*(.+)$",open(fp).read(),_re.M)
         sl=os.path.basename(fp)[:-3]
         items.append(f'<li><a href="{PATH}/guides/{sl}.html">{esc(t.group(1).split(" - ")[0] if t else sl)}</a></li>')
-    return '<h2>Rate guides</h2><ul class="niches">'+"".join(items)+'</ul>'
+    return '<h2>Pricing guides</h2><ul class="niches">'+"".join(items)+'</ul>'
 HOME_GUIDES=_home_guides()
 body = f"""<section class="hero" aria-labelledby="ht">
-<h1 id="ht">What should you charge a sponsor?</h1>
+<h1 id="ht">Stop guessing what to charge sponsors.</h1>
 <form class="say" onsubmit="return false">
 <p>I make <select id="hp" aria-label="Platform">{''.join(f'<option value="{esc(p)}">{esc(HERO_WORD[p])}</option>' for p in HERO_PLAT)}</select>
 about <select id="hn" aria-label="Niche"><option value="">anything</option>{''.join(f'<option value="{esc(n)}">{esc(n.lower())}</option>' for n in niches)}</select>
-and each one gets about <input id="hv" type="number" inputmode="numeric" value="10000" min="100" step="100" aria-label="Views or opens per post"> <span id="hu">views</span>.</p>
+and average <input id="hv" type="number" inputmode="numeric" value="10000" min="100" step="100" aria-label="Views or opens per post"> <span id="hu">views</span>.</p>
 </form>
-<p class="ask" aria-live="polite">Ask for <mark id="hr">$200 to $316</mark></p>
+<p class="ask" aria-live="polite">Typical ask: <mark id="hr">$200 to $316</mark></p>
 <p class="basis" id="hb"></p>
-<p class="heroalt">Or skip the estimate and <a href="#rates">read {len(rates)} real deals</a>, each linked to where it was published.</p>
+<p class="heroalt">Want the raw receipts? Jump to <a href="#rates">all {len(rates)} sourced deals</a> below.</p>
 </section>
 <script>const HD={calc_json};
 function hp(a,p){{a=[...a].sort((x,y)=>x-y);const i=(a.length-1)*p,l=Math.floor(i);return a[l]+(a[Math.ceil(i)]-a[l])*(i-l)}}
 function hrun(){{const p=document.getElementById('hp').value,n=document.getElementById('hn').value,v=+document.getElementById('hv').value||0;
 document.getElementById('hu').textContent=p==='Newsletter'?'opens':(p==='Podcast'?'downloads':'views');
-let pts=(HD[p]||[]).filter(x=>!n||x[0]===n),note='';if(pts.length<3){{pts=HD[p]||[];if(n)note=' We only have a few '+n.toLowerCase()+' deals so far, so this uses every niche.';}}
+let pts=(HD[p]||[]).filter(x=>!n||x[0]===n),note='';if(pts.length<3){{pts=HD[p]||[];if(n)note=' Still light on '+n.toLowerCase()+' data, so this pulls from all niches on '+p+'.';}}
 const c=pts.map(x=>x[1]),f=x=>'$'+Math.round(x).toLocaleString();
 document.getElementById('hr').textContent=f(hp(c,.25)*v/1000)+' to '+f(hp(c,.75)*v/1000);
-document.getElementById('hb').textContent='The middle half of '+pts.length+' sourced deals, priced per 1,000 '+document.getElementById('hu').textContent+'.'+note;}}
+document.getElementById('hb').textContent='Middle 50% of '+pts.length+' reported deals, scaled per 1,000 '+document.getElementById('hu').textContent+'.'+note;}}
 ['hp','hn','hv'].forEach(i=>document.getElementById(i).addEventListener('input',hrun));hrun();</script>
-<h2 id="rates">Every deal we have found</h2>
-<div class="toolbar"><div class="filters"><input id="q" placeholder="Search (e.g. tech, 50K, dedicated)">
+<h2 id="rates">All {len(rates)} reported deals</h2>
+<div class="toolbar"><div class="filters"><input id="q" placeholder="Filter by niche, size, or placement (e.g. tech, 50K, dedicated)">
 {opts('platform', platforms)}{opts('niche', niches)}<select id="f-bucket"><option value="">All sizes</option>{''.join(f'<option>{b}</option>' for b in buckets)}</select>{opts('placement', placements)}
 <span id="cnt"></span></div></div>{table(rates)}
 {HOME_GUIDES}
-<p class="cta">Got a real deal? <a href="{PATH}/submit.html">Share your rate anonymously</a>. It helps every creator negotiate.</p>
+<p class="cta">Closed a sponsorship recently? <a href="{PATH}/submit.html">Share what you got paid anonymously</a> so the next creator doesn't lowball themselves.</p>
 {FILTER_JS}"""
-write("index.html", page("YouTube & Newsletter Sponsorship Rates (Real Data) | Sponsor Rate Radar",
-      f"{len(rates)} real, sourced sponsorship rates for YouTubers and newsletter creators by niche, size and placement. Free rate calculator.", body, "/"))
+write("index.html", page("Sponsor Rate Radar | Real YouTube, Podcast & Newsletter Sponsorship Rates",
+      f"See what sponsors actually pay creators. Browse {len(rates)} sourced brand deals by platform, niche, and audience size, or estimate your rate in seconds.", body, "/"))
 
 
 body = f"""<h1>Sponsorship rate calculator</h1>
-<p class="lede">How much should you charge for a sponsor? Enter your typical views. We estimate a range from the CPMs in our sourced data, not made-up formulas.</p>
+<p class="lede">Plug in your average views, opens, or downloads. We pull the 25th to 75th percentile CPM straight from our sourced deals instead of making up a multiplier.</p>
 <div class="calc"><label>Platform <select id="cp">{''.join(f'<option>{esc(p)}</option>' for p in cpm_data)}</select></label>
 <label>Niche <select id="cn"><option value="">Any niche</option>{''.join(f'<option>{esc(n)}</option>' for n in niches)}</select></label>
 <label>Avg views per video / opens per email <input id="cv" type="number" value="10000" min="100"></label>
 <div id="out" class="out"></div></div>
-<p class="small">How it works: we take the CPMs (price per 1,000 views) from matching data points, then use the 25th–75th percentile range times your views. With a niche picked and few matching points, we fall back to all niches on that platform.</p>
+<p class="small">How this works: we take the CPM (price per 1,000 views or opens) from matching deals in our database and multiply the middle 50% by your average reach. If a niche has fewer than 3 entries, we widen to all niches on that platform.</p>
 <script>const D={calc_json};
 function pct(a,p){{a=[...a].sort((x,y)=>x-y);const i=(a.length-1)*p,l=Math.floor(i);return a[l]+(a[Math.ceil(i)]-a[l])*(i-l)}}
 function run(){{const p=document.getElementById('cp').value,n=document.getElementById('cn').value,v=+document.getElementById('cv').value||0;
-let pts=(D[p]||[]).filter(x=>!n||x[0]===n),note='';if(pts.length<3){{pts=D[p]||[];if(n)note=' (not enough '+n+' data yet, using all niches)';}}
+let pts=(D[p]||[]).filter(x=>!n||x[0]===n),note='';if(pts.length<3){{pts=D[p]||[];if(n)note=' (not enough '+n+' entries yet, using all '+p+' niches)';}}
 if(!pts.length){{document.getElementById('out').innerHTML='Not enough data yet.';return}}
 const c=pts.map(x=>x[1]),lo=pct(c,.25)*v/1000,hi=pct(c,.75)*v/1000,f=x=>'$'+Math.round(x).toLocaleString();
-document.getElementById('out').innerHTML='<div class="big">'+f(lo)+' to '+f(hi)+'</div>per sponsor placement, based on '+pts.length+' data points'+note+'. Median CPM $'+pct(c,.5).toFixed(2)+'.';}}
+document.getElementById('out').innerHTML='<div class="big">'+f(lo)+' to '+f(hi)+'</div>per placement, from '+pts.length+' sourced deals'+note+'. Median CPM: $'+pct(c,.5).toFixed(2)+'.';}}
 ['cp','cn','cv'].forEach(i=>document.getElementById(i).oninput=run);run();</script>"""
-write("calculator.html", page("Sponsorship Rate Calculator: How Much to Charge for a YouTube Sponsor",
-      "Free calculator: estimate what to charge sponsors based on your views, niche and real CPM data.", body, "/calculator.html"))
+write("calculator.html", page("Sponsorship Rate Calculator: Estimate What to Charge Sponsors",
+      "Estimate what to charge sponsors using real creator CPM data across YouTube, newsletters, podcasts, TikTok, and Instagram.", body, "/calculator.html"))
 
 # --- Niche pages (SEO)
 def _gtitle(g):
@@ -192,14 +193,14 @@ for n in niches:
     prices = [mid(r) for r in rows if r["placement"] != "Benchmark"]
     summ = f"Reported deals range from {money(min(prices), min(prices))} to {money(max(prices), max(prices))}." if prices else ""
     ng = [os.path.basename(fp)[:-3] for fp in sorted(_g.glob(os.path.join(ROOT, 'content', 'guides', '*.md'))) if slug(n) in os.path.basename(fp)]
-    gl = ''.join(f'<p>Read the guide: <a href="{PATH}/guides/{g}.html">{esc(_gtitle(g))}</a></p>' for g in ng)
-    b = (f'<h1>{esc(n)} sponsorship rates</h1><p class="lede">{len(rows)} real sponsorship data points for {esc(n).lower()} creators. {summ} '
-         f'Every row links to its source. Try the <a href="{PATH}/calculator.html">calculator</a> for your own numbers.</p>' + gl + table(rows))
-    write(f"rates/{s}.html", page(f"{n} Sponsorship Rates for YouTubers & Newsletters ({datetime.date.today().year}) | Sponsor Rate Radar",
-          f"What sponsors pay {n.lower()} creators: {len(rows)} real, sourced rates by channel size and placement.", b, f"/rates/{s}.html"))
+    gl = ''.join(f'<p>Full breakdown: <a href="{PATH}/guides/{g}.html">{esc(_gtitle(g))}</a></p>' for g in ng)
+    b = (f'<h1>{esc(n)} sponsorship rates</h1><p class="lede">{len(rows)} reported brand deals for {esc(n).lower()} creators. {summ} '
+         f'Click any source to see where the number came from, or run your own views through the <a href="{PATH}/calculator.html">calculator</a>.</p>' + gl + table(rows))
+    write(f"rates/{s}.html", page(f"{n} Sponsorship Rates for Creators ({datetime.date.today().year}) | Sponsor Rate Radar",
+          f"What sponsors actually pay {n.lower()} creators: {len(rows)} sourced deals by audience size and placement.", b, f"/rates/{s}.html"))
     idx.append(f'<li><a href="{PATH}/rates/{s}.html">{esc(n)}</a> <span>{len(rows)} rates</span></li>')
 idx.append("</ul>")
-write("rates/index.html", page("Sponsorship Rates by Niche | Sponsor Rate Radar", "Browse real creator sponsorship rates by niche.", "".join(idx), "/rates/"))
+write("rates/index.html", page("Sponsorship Rates by Niche | Sponsor Rate Radar", "Browse sourced creator sponsorship rates by niche.", "".join(idx), "/rates/"))
 
 # --- Submit
 form = CFG.get("submit_endpoint")
@@ -209,49 +210,47 @@ fields = """<label>Platform<select name="platform" required><option>YouTube</opt
 <label>Avg views or opens per post<input name="avg_views" type="number"></label>
 <label>Placement<input name="placement" required placeholder="e.g. 60s integration, dedicated video, primary newsletter ad"></label>
 <label>Price paid (USD)<input name="price" type="number" required></label>
-<label>Month & year<input name="date" placeholder="e.g. Oct 2026"></label>
-<label>Anything else? (sponsor category, how they found you)<textarea name="note"></textarea></label>
-<label class="small"><input type="checkbox" required> This is a real deal I was paid for. I won't name the brand if I'm under NDA.</label>"""
+<label>Month & year<input name="date" placeholder="e.g. Nov 2026"></label>
+<label>Context (optional: sponsor category, usage rights, how they reached out)<textarea name="note"></textarea></label>
+<label class="small"><input type="checkbox" required> This is a real deal I got paid for (no NDA-protected brand names included).</label>"""
 if form:
-    sbody = f'<form class="sub" action="{esc(form)}" method="POST"><input type="hidden" name="_subject" value="New rate submission"><input type="text" name="_honey" style="display:none">{fields}<button class="btn">Submit anonymously</button></form>'
+    sbody = f'<form class="sub" action="{esc(form)}" method="POST"><input type="hidden" name="_subject" value="New rate submission"><input type="text" name="_honey" style="display:none">{fields}<button class="btn">Send rate anonymously</button></form>'
 else:
-    sbody = '<p><b>Submissions open in a few days.</b> Join the newsletter to hear when they do.</p>'
+    sbody = '<p><b>Submissions open soon.</b> Join the weekly email to hear when they go live.</p>'
 write("submit.html", page("Share Your Sponsorship Rate Anonymously | Sponsor Rate Radar",
-      "Help other creators negotiate: anonymously share what a sponsor paid you.",
-      f'<h1>Share a sponsorship rate</h1><p class="lede">Anonymous. No brand names needed. We review every submission before it goes live and never publish your channel name.</p>{sbody}', "/submit.html"))
+      "Help other creators price their work: anonymously share what a sponsor paid you.",
+      f'<h1>Share what a sponsor paid you</h1><p class="lede">100% anonymous. Keep the brand name out of it if you signed an NDA. We review every entry before adding it and never publish your channel or name.</p>{sbody}', "/submit.html"))
 
 # --- Sponsor page
 SPFORM = (f'<form class="sub" action="{esc(form)}" method="POST"><input type="hidden" name="_subject" value="SPONSOR inquiry - Sponsor Rate Radar">'
           '<input type="text" name="_honey" style="display:none"><label>Your name<input name="name" required></label>'
           '<label>Work email<input name="email" type="email" required></label><label>Company / product<input name="company" required></label>'
-          '<label>Anything we should know?<textarea name="message"></textarea></label><button class="btn">Get in touch</button></form>') if form else '<p>Contact form coming soon.</p>'
+          '<label>Anything we should know?<textarea name="message"></textarea></label><button class="btn">Send inquiry</button></form>') if form else '<p>Contact form coming soon.</p>'
 contact = CFG.get("contact_email", "")
-PRICE = CFG.get('sponsor_price', 49)
-CHECKOUT = CFG.get('sponsor_checkout_url', '')
-RESERVE = (f'<p><a class="btn" href="{esc(CHECKOUT)}" target="_blank" rel="noopener">Book this slot (${PRICE} / 30 days)</a></p>'
-           f'<p class="small">Instant checkout via Stripe. Add your brand URL and one-line pitch at checkout. Live across the site within 24 hours.</p>') if CHECKOUT else (
+CHECKOUT = CFG.get("sponsor_checkout_url", "")
+RESERVE = (f'<p><a class="btn" href="{esc(CHECKOUT)}" target="_blank" rel="noopener">Claim the 30-day slot (${PRICE})</a></p>'
+           f'<p class="small">Instant Stripe checkout. Drop your URL and one-line pitch on the checkout screen and we will put your banner live within 24 hours.</p>') if CHECKOUT else (
            (f'<form class="sub" action="{esc(form)}" method="POST"><input type="hidden" name="_subject" value="PAID INTENT - ${PRICE} sponsor slot - Sponsor Rate Radar">'
             f'<input type="hidden" name="message" value="paid intent, ${PRICE} slot, we\'ll email a payment link"><input type="text" name="_honey" style="display:none">'
-            f'<p class="small">Slot opening soon, not bookable yet. Leave your email and we\'ll send a payment link when it opens.</p>'
+            f'<p class="small">Slot opening soon. Leave your email and we will send a payment link as soon as it opens.</p>'
             f'<label>Work email<input name="email" type="email" required></label><button class="btn">Reserve this slot (${PRICE} / 30 days)</button></form>') if form else '')
-sp = f"""<h1>Sponsor Sponsor Rate Radar</h1>
-<p class="lede">Every visitor here is a creator trying to figure out what to charge sponsors: YouTubers, newsletter writers and podcasters.
-If you sell to creators (editing, thumbnails, gear, sponsorship marketplaces, creator finance), this is your audience.</p>
-<div class="card"><h2>Featured sponsor: ${PRICE} for 30 days</h2><ul>
-<li>Your logo, link and one line at the top of every page</li><li>A sponsor line in the weekly rate newsletter</li>
-<li>One sponsor at a time. No clutter, no ad networks.</li><li>30 days per slot, renew if you like it</li></ul>
-<p>Founding price, locked in for as long as you stay.</p>
+sp = f"""<h1>Advertise on Sponsor Rate Radar</h1>
+<p class="lede">Creators land here right before they reply to a brand inquiry or send a rate card.
+If you build tools, agencies, gear, or services for YouTubers, podcasters, and newsletter writers, this puts your product directly in front of them.</p>
+<div class="card"><h2>Sitewide sponsor slot: ${PRICE} for 30 days</h2><ul>
+<li>Your brand name, link, and one-line pitch on every page of the site</li><li>Featured mention in our weekly rate drop email</li>
+<li>Exclusive slot: only one sponsor runs at a time</li><li>Flat 30-day run, renew only if it works for you</li></ul>
+<p>Early-bird rate: lock in ${PRICE}/mo for as long as you keep the slot.</p>
 {RESERVE}
-<p class="small">Have questions or want a multi-month slot? Drop us a note below.</p>
+<p class="small">Want to book multiple months or ask a quick question first? Send a note below.</p>
 {SPFORM}</div>"""
-write("sponsor.html", page("Advertise to YouTubers & Creators | Sponsor Rate Radar", "Reach creators researching sponsorship rates. Featured sponsor slot, $49 for 30 days.", sp, "/sponsor.html"))
+write("sponsor.html", page("Advertise to YouTubers & Creators | Sponsor Rate Radar", f"Reach creators pricing their next brand deal. Exclusive sitewide sponsor slot, ${PRICE} for 30 days.", sp, "/sponsor.html"))
 
 # --- About
-ab = """<h1>About &amp; method</h1><p>Sponsor Rate Radar collects sponsorship rates that creators, agencies and platforms have published,
-plus anonymous creator submissions we review by hand.</p><ul><li>Every curated number links to its source.</li>
-<li>Submissions are checked for plausibility (views vs price) before publishing.</li><li>Benchmarks are industry averages, labeled "Benchmark".</li>
-<li>We never invent data. If something looks wrong, tell us and we'll fix or remove it.</li></ul>"""
-write("about.html", page("About & Method | Sponsor Rate Radar", "How Sponsor Rate Radar collects and checks sponsorship rate data.", ab, "/about.html"))
+ab = """<h1>How we collect these rates</h1><p>Sponsor Rate Radar tracks real sponsorship payouts shared publicly by creators, talent managers, and industry reports, alongside anonymous deals submitted by creators.</p><ul><li>Every public entry links directly to the original video, thread, or report.</li>
+<li>Anonymous submissions are sanity-checked (payout vs. views and placement) before they go live.</li><li>Industry-wide averages are tagged as "Benchmark" so you can separate them from single creator deals.</li>
+<li>Zero made-up numbers. Spot a broken link or an outdated rate? Let us know and we will fix or pull it.</li></ul>"""
+write("about.html", page("How We Collect These Rates | Sponsor Rate Radar", "How Sponsor Rate Radar sources and checks creator sponsorship rates.", ab, "/about.html"))
 
 # --- Guides (content/guides/*.md)
 import sys, glob
@@ -265,16 +264,17 @@ for fp in sorted(glob.glob(os.path.join(ROOT, "content", "guides", "*.md"))):
 for gslug, meta, md in guides:
     body, faq = render(md)
     others = "".join(f'<li><a href="{PATH}/guides/{g}.html">{esc(m.get("title", g))}</a></li>' for g, m, _ in guides if g != gslug)
-    body = f'<article class="guide prose">{body}<p class="small">Updated {TODAY}. Numbers link to their sources.</p></article><h2>More guides</h2><ul>{others}</ul>'
+    body = f'<article class="guide prose">{body}<p class="small">Updated {TODAY}. Every number links to its source.</p></article><h2>More guides</h2><ul>{others}</ul>'
     head = ""
     if faq:
         ld = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
             {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in faq]}
         head = '<script type="application/ld+json">' + json.dumps(ld).replace("</", "<\\/") + "</script>"
     write(f"guides/{gslug}.html", page(meta.get("title", gslug) + " | Sponsor Rate Radar", meta.get("description", ""), body, f"/guides/{gslug}.html", head))
-gi = '<h1>Sponsorship rate guides</h1><p>Plain answers with real, sourced numbers.</p><ul class="niches">' + "".join(
+
+gi = '<h1>Creator sponsorship pricing guides</h1><p>Breakdowns by platform, channel size, and niche, backed by the deals in our database.</p><ul class="niches">' + "".join(
     f'<li><a href="{PATH}/guides/{g}.html">{esc(m.get("title", g))}</a><br><span class="small">{esc(m.get("description", ""))}</span></li>' for g, m, _ in guides) + "</ul>"
-write("guides/index.html", page("Sponsorship Rate Guides | Sponsor Rate Radar", "Guides on what to charge sponsors on YouTube, Shorts, newsletters and podcasts, with sourced 2026 numbers.", gi, "/guides/"))
+write("guides/index.html", page("Creator Sponsorship Pricing Guides | Sponsor Rate Radar", "Breakdowns on what to charge sponsors across YouTube, Shorts, newsletters, podcasts, TikTok, and Instagram, backed by real 2026 numbers.", gi, "/guides/"))
 
 # --- sitemap + robots
 urls = ["/", "/calculator.html", "/rates/", "/submit.html", "/sponsor.html", "/about.html"] + [f"/rates/{slug(n)}.html" for n in niches] + ["/guides/"] + [f"/guides/{g}.html" for g, _, _ in guides]

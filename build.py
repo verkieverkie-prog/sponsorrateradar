@@ -228,8 +228,8 @@ SPFORM = (f'<form class="sub" action="{esc(form)}" method="POST"><input type="hi
 contact = CFG.get("contact_email", "")
 PRICE = CFG.get('sponsor_price', 49)
 CHECKOUT = CFG.get('sponsor_checkout_url', '')
-RESERVE = (f'<p><a class="btn" href="{esc(CHECKOUT)}" target="_blank" rel="noopener">Book this slot — ${PRICE} / 30 days</a></p>'
-           f'<p class="small">Instant checkout via Stripe. Add your brand URL and one-line pitch at checkout — live across the site within 24 hours.</p>') if CHECKOUT else (
+RESERVE = (f'<p><a class="btn" href="{esc(CHECKOUT)}" target="_blank" rel="noopener">Book this slot (${PRICE} / 30 days)</a></p>'
+           f'<p class="small">Instant checkout via Stripe. Add your brand URL and one-line pitch at checkout. Live across the site within 24 hours.</p>') if CHECKOUT else (
            (f'<form class="sub" action="{esc(form)}" method="POST"><input type="hidden" name="_subject" value="PAID INTENT - ${PRICE} sponsor slot - Sponsor Rate Radar">'
             f'<input type="hidden" name="message" value="paid intent, ${PRICE} slot, we\'ll email a payment link"><input type="text" name="_honey" style="display:none">'
             f'<p class="small">Slot opening soon, not bookable yet. Leave your email and we\'ll send a payment link when it opens.</p>'

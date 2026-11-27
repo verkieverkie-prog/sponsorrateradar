@@ -59,6 +59,7 @@ def page(title, desc, body, path, extra_head=""):
 <a href="{PATH}/sponsor.html">Advertise</a><a class="navcta" href="{PATH}/submit.html">Share a rate</a></nav></div></header>
 <main>{body}{sponsor_box()}{newsletter_box()}</main>
 <footer><div class="fwrap"><div><a class="logo" href="{PATH}/">Sponsor Rate Radar</a><p>Sourced brand deal rates for creators. Every row links back to the original creator post, agency report, or reviewed submission. Reported payouts, not guarantees. Last updated {TODAY}.</p></div><div><a href="{PATH}/">Rates</a><a href="{PATH}/calculator.html">Calculator</a><a href="{PATH}/guides/">Guides</a><a href="{PATH}/about.html">Method</a><a href="{PATH}/sponsor.html">Advertise</a></div></div></footer>
+<script data-goatcounter="https://sponsorrateradar.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body></html>"""
 
 def table(rows):
